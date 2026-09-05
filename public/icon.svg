@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#2d2d2a" />
+  <circle cx="256" cy="256" r="180" fill="#383632" stroke="#8c5b3e" stroke-width="6" opacity="0.6" />
+  <!-- Minimalist Zen Lotus & Reflective Water drop -->
+  <path d="M256 128 C230 190 200 240 200 280 C200 312 225 338 256 338 C287 338 312 312 312 280 C312 240 282 190 256 128 Z" fill="#deb887" />
+  <path d="M256 210 C210 240 160 270 170 310 C178 340 215 355 256 355 C297 355 334 340 342 310 C352 270 302 240 256 210 Z" fill="#c49a6c" opacity="0.75" />
+  <circle cx="256" cy="380" r="14" fill="#deb887" opacity="0.8" />
+  <circle cx="256" cy="412" r="6" fill="#deb887" opacity="0.5" />
+</svg>

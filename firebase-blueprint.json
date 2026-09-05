@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "JournalInteraction": {
+      "title": "JournalInteraction",
+      "description": "A single multi-turn journaling and reflection session with AI responses.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique session ID" },
+        "userId": { "type": "string", "description": "Owner user UID" },
+        "title": { "type": "string", "description": "Derived reflection title" },
+        "mode": { "type": "string", "description": "Reflection mode enum" },
+        "turns": { "type": "array", "description": "Ordered conversational turns" },
+        "createdAt": { "type": "number", "description": "Creation timestamp in epoch ms" },
+        "updatedAt": { "type": "number", "description": "Last updated timestamp in epoch ms" },
+        "favorite": { "type": "boolean", "description": "Whether the entry is starred" },
+        "sentiment": { "type": "string", "description": "Mood or sentiment tag recorded with the reflection (peaceful, grateful, energized, thoughtful, anxious, tired, frustrated)" },
+        "location": {
+          "type": "object",
+          "description": "Pinned geographic location metadata for this reflection",
+          "properties": {
+            "name": { "type": "string" },
+            "address": { "type": "string" },
+            "lat": { "type": "number" },
+            "lng": { "type": "number" },
+            "placeId": { "type": "string" }
+          },
+          "required": ["name", "lat", "lng"]
+        }
+      },
+      "required": ["id", "userId", "title", "mode", "turns", "createdAt", "updatedAt"]
+    },
+    "ReminderSettings": {
+      "title": "ReminderSettings",
+      "description": "User preferences for notifications and email reminders.",
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean", "description": "Whether reminders are enabled" },
+        "time": { "type": "string", "description": "Daily alert time in HH:MM format" },
+        "daysOfWeek": { "type": "array", "description": "List of active day indices (0-6)" },
+        "theme": { "type": "string", "description": "Selected reflection prompt theme" },
+        "customMessage": { "type": "string", "description": "Custom prompt message" },
+        "soundEnabled": { "type": "boolean", "description": "Whether meditative sound is enabled" },
+        "emailReminderEnabled": { "type": "boolean", "description": "Whether email reminders are enabled" },
+        "reminderEmail": { "type": "string", "description": "Target email address for reminders" },
+        "lastDismissedDate": { "type": "string", "description": "Last dismissed date string" },
+        "lastEmailSentDate": { "type": "string", "description": "Last email sent date string" },
+        "updatedAt": { "type": "number", "description": "Last updated timestamp" }
+      },
+      "required": ["enabled", "time", "daysOfWeek", "theme", "soundEnabled"]
+    },
+    "ThemePreference": {
+      "title": "ThemePreference",
+      "description": "User preference for light, dark, or system UI appearance.",
+      "type": "object",
+      "properties": {
+        "mode": { "type": "string", "enum": ["light", "dark", "system"], "description": "Theme mode" },
+        "updatedAt": { "type": "number", "description": "Last updated timestamp" }
+      },
+      "required": ["mode", "updatedAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile with role-based access control (RBAC).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "User unique identifier" },
+        "email": { "type": "string", "description": "User email address" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "photoURL": { "type": "string", "description": "User avatar URL" },
+        "role": { "type": "string", "enum": ["admin", "user"], "description": "Role-based access level" },
+        "createdAt": { "type": "number", "description": "Creation timestamp in epoch ms" },
+        "updatedAt": { "type": "number", "description": "Last updated timestamp in epoch ms" }
+      },
+      "required": ["uid", "email", "role", "createdAt", "updatedAt"]
+    },
+    "AdminAuditLog": {
+      "title": "AdminAuditLog",
+      "description": "Tamper-evident log of administrative actions and security inspections.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique audit log ID" },
+        "adminUid": { "type": "string", "description": "UID of admin initiating the action" },
+        "adminEmail": { "type": "string", "description": "Email of admin" },
+        "action": { "type": "string", "description": "Action performed" },
+        "details": { "type": "string", "description": "Sanitized detail metadata or payload" },
+        "timestamp": { "type": "number", "description": "Epoch millisecond timestamp" }
+      },
+      "required": ["id", "adminUid", "adminEmail", "action", "details", "timestamp"]
+    },
+    "SystemPromptConfig": {
+      "title": "SystemPromptConfig",
+      "description": "Administrative configuration for AI reflection modes and prompts.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Mode identifier" },
+        "mode": { "type": "string", "description": "Reflection mode enum" },
+        "systemInstruction": { "type": "string", "description": "Active system prompt" },
+        "updatedAt": { "type": "number", "description": "Last modified timestamp" },
+        "updatedBy": { "type": "string", "description": "Admin UID who saved the prompt" }
+      },
+      "required": ["id", "mode", "systemInstruction", "updatedAt", "updatedBy"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User account document containing RBAC role and metadata."
+    },
+    "/users/{userId}/interactions/{interactionId}": {
+      "schema": { "$ref": "#/entities/JournalInteraction" },
+      "description": "User private reflective journaling sessions."
+    },
+    "/users/{userId}/settings/reminders": {
+      "schema": { "$ref": "#/entities/ReminderSettings" },
+      "description": "User daily notification and email reminder settings."
+    },
+    "/users/{userId}/settings/theme": {
+      "schema": { "$ref": "#/entities/ThemePreference" },
+      "description": "User UI appearance mode preference."
+    },
+    "/admin/audit_logs/{logId}": {
+      "schema": { "$ref": "#/entities/AdminAuditLog" },
+      "description": "Privileged audit trail accessible only to administrators."
+    },
+    "/system/prompts/{promptId}": {
+      "schema": { "$ref": "#/entities/SystemPromptConfig" },
+      "description": "System-wide reflection prompts managed by administrators."
+    }
+  }
+}

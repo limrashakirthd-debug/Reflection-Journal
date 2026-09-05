@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for Zero-Trust RBAC & Tiered Access Control
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        (exists(/databases/{database}/documents/users/$(request.auth.uid)) &&
+         get(/databases/{database}/documents/users/$(request.auth.uid)).data.role == 'admin') ||
+        request.auth.token.email == 'limrashakirthd@gmail.com'
+      );
+    }
+
+    function isOwnerOrAdmin(userId) {
+      return isOwner(userId) || isAdmin();
+    }
+
+    // User Profile Document with RBAC Role (Anti-Escalation Guards)
+    match /users/{userId} {
+      allow get: if isOwnerOrAdmin(userId);
+      allow list: if isAdmin();
+      // On creation, normal users can only initialize role as 'user', unless recognized bootstrap admin
+      allow create: if isOwner(userId) && (
+        request.resource.data.role == 'user' ||
+        (request.auth.token.email == 'limrashakirthd@gmail.com' && request.resource.data.role == 'admin')
+      );
+      // On update, normal users cannot mutate their role; only admins can elevate or modify roles
+      allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Personal Journal Reflections (Tier 2 Isolation)
+    match /users/{userId}/interactions/{interactionId} {
+      allow read, write: if isOwnerOrAdmin(userId);
+    }
+
+    // User Settings (Reminders, Theme)
+    match /users/{userId}/settings/{settingId} {
+      allow read, write: if isOwnerOrAdmin(userId);
+    }
+
+    // Elevated Admin Resources & Tamper-Evident Audit Logs (Tier 1 Isolation)
+    match /admin/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // System Configurations and Prompts
+    match /system/{document=**} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

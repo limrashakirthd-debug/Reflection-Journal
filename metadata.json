@@ -1,0 +1,6 @@
+{
+  "name": "Reflections Journal",
+  "description": "A private authenticated journal and reflection assistant powered by Gemini and Firestore.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

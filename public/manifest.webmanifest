@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "Reflections Journal",
+  "short_name": "Reflections",
+  "description": "A private authenticated journal and reflection assistant powered by Gemini and Firestore.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8f7f2",
+  "theme_color": "#2d2d2a",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

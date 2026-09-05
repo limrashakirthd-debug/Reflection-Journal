@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-natural-50: #fbfbf9;
+  --color-natural-100: #f8f7f2;
+  --color-natural-200: #f2f1ea;
+  --color-natural-300: #ebe9e1;
+  --color-natural-400: #e5e4de;
+  --color-natural-500: #dedcd5;
+  --color-natural-600: #888780;
+  --color-natural-700: #6f6e69;
+  --color-natural-800: #42413d;
+  --color-natural-900: #2d2d2a;
+
+  --font-serif: 'Newsreader', Georgia, Cambria, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #f8f7f2;
+  color: #2d2d2a;
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+:root.dark body {
+  background-color: #161514;
+  color: #f4efe6;
+}
+
+/* Natural tones scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #dedcd5;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c5c3ba;
+}
+
+:root.dark ::-webkit-scrollbar-thumb {
+  background: #36332e;
+}
+:root.dark ::-webkit-scrollbar-thumb:hover {
+  background: #4a453e;
+}
+
+/* Markdown styling adjustments for dark mode */
+.dark .prose {
+  color: #f4efe6;
+}
+.dark .prose strong {
+  color: #ffffff;
+}
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4 {
+  color: #f4efe6;
+}
+.dark .prose blockquote {
+  color: #c5bfb4;
+  border-left-color: #deb887;
+}
+.dark .prose code {
+  color: #deb887;
+  background-color: #252320;
+}
+.dark .prose ul,
+.dark .prose ol {
+  color: #f4efe6;
+}
+.dark .prose li {
+  color: #f4efe6;
+}
