@@ -473,8 +473,16 @@ export function AdminConsoleModal({
                     <span className="text-[11px] font-medium text-[#6f6e69] dark:text-[#a8a398] uppercase tracking-wider">
                       Gemini Fallback Ladder
                     </span>
-                    <p className="text-sm font-semibold text-[#2d2d2a] dark:text-[#deb887]">
-                      {diagnostics.integrations.gemini.configured ? '✓ API Key Bound' : '⚠️ Missing Key'}
+                    <p
+                      className={`text-sm font-semibold ${
+                        diagnostics.integrations.gemini.configured
+                          ? 'text-[#2e5339] dark:text-[#86efac]'
+                          : 'text-[#8c5b3e] dark:text-[#deb887]'
+                      }`}
+                    >
+                      {diagnostics.integrations.gemini.configured
+                        ? '✓ Live Gemini Models Connected'
+                        : '⚡ Built-in Engine Active (Offline Mode)'}
                     </p>
                     <p className="text-[11px] text-[#6f6e69] dark:text-[#a8a398]">
                       Primary: <span className="font-mono text-[#2d2d2a] dark:text-[#f4efe6]">{diagnostics.integrations.gemini.primaryModel}</span>

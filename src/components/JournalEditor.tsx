@@ -440,11 +440,21 @@ export function JournalEditor({
                     <div className="flex items-center justify-between gap-2 text-xs">
                       <div className="flex items-center gap-2">
                         <span className="font-semibold text-[#2d2d2a] dark:text-[#f4efe6]">
-                          {isUser ? 'You' : 'Gemini 3.6 Flash'}
+                          {isUser
+                            ? 'You'
+                            : turn.modelUsed === 'offline-reflective-engine'
+                            ? 'Reflections Guide'
+                            : 'Gemini AI'}
                         </span>
                         {!isUser && turn.modelUsed && (
-                          <span className="text-[10px] font-mono text-[#6f6e69] dark:text-[#deb887] bg-[#ebe9e1] dark:bg-[#282521] px-1.5 py-0.5 rounded">
-                            {turn.modelUsed}
+                          <span
+                            className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                              turn.modelUsed === 'offline-reflective-engine'
+                                ? 'text-[#8c5b3e] dark:text-[#deb887] bg-[#f0e6d2] dark:bg-[#342e26]'
+                                : 'text-[#2e5339] dark:text-[#86efac] bg-[#e4f2e6] dark:bg-[#1e2f22]'
+                            }`}
+                          >
+                            {turn.modelUsed === 'offline-reflective-engine' ? 'Offline Engine' : turn.modelUsed}
                           </span>
                         )}
                         <span className="text-[11px] text-[#888780] dark:text-[#958f84]">
